@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مولد فواتير - Mobile Zone</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo-box">Mobile<br><span>Zone</span></div>
+        <div>
+          <h1>Mobile Zone</h1>
+          <div class="phone">📞 01061409003</div>
+        </div>
+      </div>
+      <div class="top-controls">
+        <div class="edition">نسخة: Brand Edition + حفظ محلي + CSV</div>
+      </div>
+    </header>
+
+    <main class="card">
+      <form id="invoice-form" onsubmit="return false;">
+        <div class="grid">
+          <div>
+            <label>اسم العميل</label>
+            <input type="text" id="customer-name" placeholder="مثال: محمد علي" required />
+          </div>
+          <div>
+            <label>هاتف العميل</label>
+            <input type="tel" id="customer-phone" placeholder="010xxxxxxxx" />
+          </div>
+        </div>
+
+        <div class="grid">
+          <div>
+            <label>رقم الفاتورة</label>
+            <input type="text" id="invoice-number" readonly />
+          </div>
+          <div>
+            <label>تاريخ الفاتورة</label>
+            <input type="text" id="invoice-date" readonly />
+          </div>
+        </div>
+
+        <div>
+          <label>ملاحظات (اختياري)</label>
+          <textarea id="invoice-notes" rows="2" placeholder="مثال: الضمان سنة واحدة"></textarea>
+        </div>
+
+        <div style="margin-top:12px">
+          <table class="items-table" id="items-table">
+            <thead>
+              <tr>
+                <th>اسم المنتج / الخدمة</th>
+                <th>الكمية</th>
+                <th>سعر الوحدة</th>
+                <th>المجموع</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="items-body"></tbody>
+          </table>
+
+          <div class="actions">
+            <button class="btn-ghost" id="add-item">+ إضافة منتج</button>
+            <button class="btn-ghost" id="reset-items" type="button">إعادة تعيين</button>
+            <button class="btn-ghost" id="save-invoice" type="button">💾 حفظ فاتورة</button>
+            <button class="btn-ghost" id="export-csv" type="button">📤 تصدير CSV</button>
+            <div style="flex:1"></div>
+            <button class="btn-primary" id="generate-pdf">إنشاء PDF</button>
+            <button class="btn-ghost" id="preview-btn" type="button">معاينة</button>
+          </div>
+
+          <div class="totals">
+            <div class="box">
+              <div class="small">المجموع</div>
+              <strong id="sub-total">0.00 ج.م</strong>
+            </div>
+            <div class="box" title="انقر لتعديل نسبة الخصم">
+              <div class="small">الخصم</div>
+              <strong><span id="discount">0</span>%</strong>
+            </div>
+            <div class="box">
+              <div class="small">الإجمالي الصافي</div>
+              <strong id="total">0.00 ج.م</strong>
+            </div>
+          </div>
+        </div>
+      </form>
+    </main>
+
+    <section class="side-panel">
+      <div class="left" style="flex:1">
+        <div class="invoice-preview card" id="invoice-preview">
+          <header>
+            <div>
+              <div class="brand-title">Mobile Zone</div>
+              <div class="small">📞 01061409003</div>
+            </div>
+            <div class="meta">
+              <div id="preview-inv-number">فاتورة #</div>
+              <div class="muted" id="preview-date">تاريخ</div>
+              <div class="muted" id="preview-customer">العميل: -</div>
+            </div>
+          </header>
+
+          <table class="invoice-table" id="invoice-table-preview">
+            <thead>
+              <tr>
+                <th>المنتج / الخدمة</th>
+                <th>الكمية</th>
+                <th>سعر الوحدة</th>
+                <th>المجموع</th>
+              </tr>
+            </thead>
+            <tbody id="invoice-items-preview"></tbody>
+          </table>
+
+          <div class="preview-totals">
+            <div>
+              <div class="small">المجموع</div>
+              <div id="preview-subtotal">0.00 ج.م</div>
+            </div>
+            <div>
+              <div class="small">الخصم</div>
+              <div id="preview-discount">0%</div>
+            </div>
+            <div>
+              <div class="small">الإجمالي</div>
+              <div id="preview-total" style="font-weight:800;font-size:18px">0.00 ج.م</div>
+            </div>
+          </div>
+
+          <div class="notes" id="pv-notes">ملاحظة: يُرجى الاحتفاظ بالفاتورة كإثبات للشراء. لأي استفسار: 01061409003</div>
+
+          <hr />
+          <div class="warranty">
+            <strong>شروط الضمان</strong>
+            <div id="warranty-text">الضمان يشمل عيوب الصناعة لمدة عام، ولا يشمل الكسر أو سوء الاستخدام.</div>
+          </div>
+        </div>
+      </div>
+
+      <aside style="width:300px">
+        <div class="card">
+          <div class="saved-head">
+            <strong>الفواتير المحفوظة</strong>
+            <button class="btn-ghost" id="clear-storage">مسح الكل</button>
+          </div>
+          <input type="text" id="search-saved" placeholder="بحث باسم العميل أو الرقم" />
+          <div class="saved-list" id="saved-list"></div>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="footer">Mobile Zone — مولد فواتير</footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
